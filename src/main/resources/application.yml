@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: order
+  datasource:
+    url: jdbc:postgresql://localhost:5432/insurance_db
+    username: user
+    password: pass
+  jpa:
+    hibernate:
+      ddl-auto: update
+  kafka:
+    bootstrap-servers: localhost:9092
+
+fraud:
+  service:
+    url: http://localhost:8081/mock/fraud-analysis
