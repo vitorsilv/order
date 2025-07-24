@@ -6,10 +6,12 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
 @Data
 @Entity
 public class InsurancePolicy  {
@@ -26,10 +28,10 @@ public class InsurancePolicy  {
     private PaymentMethod paymentMethod;
     @Enumerated(EnumType.STRING)
     private InsurancePolicyStatus status;
-    private LocalDateTime createdAt;
-    private LocalDateTime finishedAt;
-    private Double totalMonthlyPremiumAmount;
-    private Double insuredAmount;
+    private Instant createdAt;
+    private Instant finishedAt;
+    private BigDecimal totalMonthlyPremiumAmount;
+    private BigDecimal insuredAmount;
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Map<String, BigDecimal> coverages;

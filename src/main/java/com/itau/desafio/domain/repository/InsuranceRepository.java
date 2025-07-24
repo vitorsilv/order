@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PolicyRepository extends JpaRepository <InsurancePolicy, UUID>{
+public interface InsuranceRepository extends JpaRepository <InsurancePolicy, UUID>{
     InsurancePolicy save(InsurancePolicy request);
     Optional<InsurancePolicy> findById(UUID id);
     List<InsurancePolicy> findByCustomerId(UUID customerId);
