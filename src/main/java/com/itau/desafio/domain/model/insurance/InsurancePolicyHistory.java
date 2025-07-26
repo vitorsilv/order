@@ -1,5 +1,6 @@
 package com.itau.desafio.domain.model.insurance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 public class InsurancePolicyHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Enumerated(EnumType.STRING)
     private InsurancePolicyStatus status;

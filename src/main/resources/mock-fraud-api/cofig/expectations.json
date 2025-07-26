@@ -1,0 +1,41 @@
+{
+  "httpRequest": {
+    "method": "POST",
+    "path": "/fraud-analysis"
+  },
+  "httpResponse": {
+    "statusCode": 200,
+    "headers": {
+      "Content-Type": ["application/json"]
+    },
+    "body": {
+      "type": "JSON",
+      "json":
+{
+  "orderId": "${json-unit.any-string}",
+  "customerId": "${json-unit.any-string}",
+  "analyzedAt": "{{now 'yyyy-MM-dd\\'T\\'HH:mm:ssX'}}",
+  "classification": "{{random 'HIGH_RISK' 'REGULAR' 'PREFERENTIAL' 'NO_HISTORY'}}",
+  "occurrences": [
+    {
+      "id": "{{uuid}}",
+      "productId": "{{randomInt 10000000 99999999}}",
+    "type": "{{random 'FRAUD' 'SUSPICION' 'WARNING'}}",
+    "description": "{{random 'Attempted Fraudulent transaction' 'Unusual activity flagged' 'Multiple chargebacks detected'}}",
+    "createdAt": "{{now 'yyyy-MM-dd\\'T\\'HH:mm:ssX'}}",
+    "updatedAt": "{{now 'yyyy-MM-dd\\'T\\'HH:mm:ssX'}}"
+    },
+    {
+      "id": "{{uuid}}",
+      "productId": "{{randomInt 10000000 99999999}}",
+    "type": "{{random 'FRAUD' 'SUSPICION' 'WARNING'}}",
+    "description": "{{random 'Attempted Fraudulent transaction' 'Unusual activity flagged' 'Multiple chargebacks detected'}}",
+    "createdAt": "{{now 'yyyy-MM-dd\\'T\\'HH:mm:ssX'}}",
+    "updatedAt": "{{now 'yyyy-MM-dd\\'T\\'HH:mm:ssX'}}"
+    }
+  ]
+}
+
+}
+}
+}
