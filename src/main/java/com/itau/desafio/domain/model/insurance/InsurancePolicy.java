@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Entity
@@ -28,7 +29,6 @@ public class InsurancePolicy  {
     private PaymentMethod paymentMethod;
     @Enumerated(EnumType.STRING)
     private InsurancePolicyStatus status;
-
     private LocalDateTime createdAt;
     private LocalDateTime finishedAt;
     private BigDecimal totalMonthlyPremiumAmount;
@@ -39,7 +39,7 @@ public class InsurancePolicy  {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> assistances;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "insurancePolicy")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "insurancePolicy", fetch = FetchType.LAZY)
     private List<InsurancePolicyHistory> history;
 
     public InsurancePolicy(UUID customerId, UUID productId, InsurancePolicyCategory category, SalesChannel salesChannel, PaymentMethod paymentMethod,

@@ -14,19 +14,37 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/insurance")
 public class InsuranceController {
+    private static final String LOG_PREFIX = "[InsuranceController]";
+
     private final InsuranceService insuranceService;
 
     @PostMapping
-    public ResponseEntity<InsurancePolicyResponse> insurancePolicy(
-            @Valid @RequestBody InsurancePolicyRequest request
-    ) {
-        log.info("");
+    public ResponseEntity<InsurancePolicyResponse> createInsurancePolicy(
+            @Valid @RequestBody InsurancePolicyRequest request) {
+        log.info("{} Nova solicitação de apólice para cliente: {}", LOG_PREFIX, request.getCustomerId());
         return ResponseEntity.ok(insuranceService.createInsurancePolicy(request));
+    }
+
+    @GetMapping("/{policyId}")
+    public ResponseEntity<InsurancePolicyResponse> getByPolicyId(
+            @PathVariable UUID policyId) {
+        log.info("{} Consultando apólice por ID: {}", LOG_PREFIX, policyId);
+        return ResponseEntity.ok(insuranceService.findByPolicyId(policyId));
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<InsurancePolicyResponse>> getByCustomerId(
+            @PathVariable UUID customerId) {
+        log.info("{} Consultando apólices por cliente: {}", LOG_PREFIX, customerId);
+        return ResponseEntity.ok(insuranceService.findByCustomerId(customerId));
     }
 
 }

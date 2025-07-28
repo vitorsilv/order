@@ -3,11 +3,13 @@ package com.itau.desafio.domain.model.insurance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.checkerframework.checker.units.qual.N;
 
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class InsurancePolicyHistory {
     @Id

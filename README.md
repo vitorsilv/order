@@ -1,14 +1,10 @@
 # TODO
-- Rodar projeto
-
-
 - Teste Kadrop
 - Kafka envio
 - Kafka Consumo - Maquina de estados
 - Testes
 - Métricas
 - Logs
-- Validaçoes
 - Atualizar PS1
 
 ## Seria bom

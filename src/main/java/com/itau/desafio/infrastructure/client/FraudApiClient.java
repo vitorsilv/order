@@ -1,4 +1,4 @@
-package com.itau.desafio.infrastructure;
+package com.itau.desafio.infrastructure.client;
 
 import com.itau.desafio.domain.model.fraud.FraudAnalysisRequest;
 import com.itau.desafio.domain.model.fraud.FraudAnalysisResponse;

@@ -11,10 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
-@Setter
 @Builder
 @JsonSerialize
 public class InsurancePolicyResponse {
