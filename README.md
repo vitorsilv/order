@@ -1,9 +1,10 @@
 # TODO
 - Rodar projeto
 
+
 - Teste Kadrop
 - Kafka envio
-- Kafka Consumo
+- Kafka Consumo - Maquina de estados
 - Testes
 - Métricas
 - Logs

@@ -4,32 +4,36 @@ package com.itau.desafio.domain.service;
 import com.itau.desafio.domain.model.insurance.*;
 import com.itau.desafio.domain.repository.InsuranceRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
+@AllArgsConstructor
 @Service
-@RequiredArgsConstructor
 public class InsuranceService {
-    private final InsuranceRepository insuranceRepository;
-    private final FraudService fraudService;
+    private InsuranceRepository insuranceRepository;
+    private FraudService fraudService;
+
 
 
     @Transactional
     public InsurancePolicyResponse createInsurancePolicy(InsurancePolicyRequest request) {
-
         InsurancePolicy saved = insuranceRepository.save(request.toEntity());
 
-        log.info("1. RECEBIDO e salvo com sucesso");
+
+
+        log.info("Apólice criada com sucesso: {}", saved.getId());
 
         fraudService.processPolicy(saved);
-
-        saved.addStatusHistory(InsurancePolicyStatus.PENDING);
-
-        saved.addStatusHistory(InsurancePolicyStatus.APPROVED);
-
-        insuranceRepository.save(saved);
+//
+//        saved.addStatusHistory(InsurancePolicyStatus.PENDING);
+//
+//        saved.addStatusHistory(InsurancePolicyStatus.APPROVED);
+//
+//        insuranceRepository.save(saved);
         return saved.toResponse();
     }
 }

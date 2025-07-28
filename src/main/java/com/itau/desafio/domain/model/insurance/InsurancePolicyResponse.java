@@ -2,7 +2,7 @@ package com.itau.desafio.domain.model.insurance;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import lombok.Builder;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @Builder
 @JsonSerialize
 public class InsurancePolicyResponse {

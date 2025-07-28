@@ -14,21 +14,22 @@ param (
 $projectName = "insurance-service"
 $mavenCommand = ".\mvnw.cmd"
 $dockerComposeCommand = "docker-compose"
+$dockerEnvPath = ".\dev-env"  # Caminho relativo para a pasta dev-env
 
 function Show-Help {
     Write-Host "Uso: .\build.ps1 [comando]"
     Write-Host ""
-    Write-Host "Comandos disponiveis:"
+    Write-Host "Comandos disponíveis:"
     Write-Host "  build       - Compila o projeto"
     Write-Host "  run         - Inicia a aplicação"
     Write-Host "  test        - Executa os testes"
-    Write-Host "  docker-build- Constroi a imagem Docker"
+    Write-Host "  docker-build- Constrói a imagem Docker"
     Write-Host "  compose-up  - Inicia os containers"
     Write-Host "  compose-down- Para os containers"
     Write-Host "  logs        - Mostra os logs dos containers"
     Write-Host "  clean       - Limpa os arquivos de build"
     Write-Host "  restart     - Reinicia toda a stack"
-    Write-Host "  check-env   - Verifica as dependencias"
+    Write-Host "  check-env   - Verifica as dependências"
     Write-Host "  help        - Mostra esta ajuda"
 }
 
@@ -48,23 +49,43 @@ function Invoke-Test {
 }
 
 function Invoke-DockerBuild {
-    Write-Host "Construindo imagem Docker..."
-    docker build -t $projectName .
+    Write-Host "Construindo imagem Docker a partir de $dockerEnvPath..."
+    Set-Location $dockerEnvPath
+    try {
+        docker build -t $projectName .
+    } finally {
+        Set-Location ..
+    }
 }
 
 function Invoke-ComposeUp {
-    Write-Host "Iniciando containers..."
-    & $dockerComposeCommand up -d --build
+    Write-Host "Iniciando containers a partir de $dockerEnvPath..."
+    Set-Location $dockerEnvPath
+    try {
+        & $dockerComposeCommand up -d --build
+    } finally {
+        Set-Location ..
+    }
 }
 
 function Invoke-ComposeDown {
-    Write-Host "Parando containers..."
-    & $dockerComposeCommand down
+    Write-Host "Parando containers a partir de $dockerEnvPath..."
+    Set-Location $dockerEnvPath
+    try {
+        & $dockerComposeCommand down
+    } finally {
+        Set-Location ..
+    }
 }
 
 function Invoke-Logs {
-    Write-Host "Mostrando logs..."
-    & $dockerComposeCommand logs -f
+    Write-Host "Mostrando logs dos containers..."
+    Set-Location $dockerEnvPath
+    try {
+        & $dockerComposeCommand logs -f
+    } finally {
+        Set-Location ..
+    }
 }
 
 function Invoke-Clean {

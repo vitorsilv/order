@@ -7,6 +7,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
+@AllArgsConstructor
 @Entity
 public class InsurancePolicyHistory {
     @Id
@@ -16,6 +17,10 @@ public class InsurancePolicyHistory {
     @Enumerated(EnumType.STRING)
     private InsurancePolicyStatus status;
     private LocalDateTime timestamp;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "insurance_policy_id", nullable = false)
+    @JsonIgnore
+    private InsurancePolicy insurancePolicy;
 
     public InsurancePolicyHistory(InsurancePolicyStatus status, LocalDateTime timestamp) {
         this.status = status;

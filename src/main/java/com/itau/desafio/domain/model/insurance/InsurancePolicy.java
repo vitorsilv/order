@@ -1,19 +1,18 @@
 package com.itau.desafio.domain.model.insurance;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Data
+@AllArgsConstructor
 @Getter
+@Setter
 @Entity
 public class InsurancePolicy  {
     @Id
@@ -29,6 +28,7 @@ public class InsurancePolicy  {
     private PaymentMethod paymentMethod;
     @Enumerated(EnumType.STRING)
     private InsurancePolicyStatus status;
+
     private LocalDateTime createdAt;
     private LocalDateTime finishedAt;
     private BigDecimal totalMonthlyPremiumAmount;
@@ -39,8 +39,8 @@ public class InsurancePolicy  {
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private List<String> assistances;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<InsurancePolicyHistory> history = Collections.emptyList();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "insurancePolicy")
+    private List<InsurancePolicyHistory> history;
 
     public InsurancePolicy(UUID customerId, UUID productId, InsurancePolicyCategory category, SalesChannel salesChannel, PaymentMethod paymentMethod,
      BigDecimal totalMonthlyPremiumAmount, BigDecimal insuredAmount, Map<String, BigDecimal> coverages, List<String> assistances) {
@@ -53,11 +53,16 @@ public class InsurancePolicy  {
         this.insuredAmount = insuredAmount;
         this.coverages = coverages;
         this.assistances = assistances;
+        this.status = InsurancePolicyStatus.RECEIVED;
+        this.createdAt = LocalDateTime.now();
+        this.history = new ArrayList<>();;
         this.addStatusHistory(InsurancePolicyStatus.RECEIVED);
     }
 
     public void addStatusHistory(InsurancePolicyStatus status) {
-        this.history.add(new InsurancePolicyHistory(status, LocalDateTime.now()));
+        InsurancePolicyHistory historyEntry = new InsurancePolicyHistory(status, LocalDateTime.now());
+        historyEntry.setInsurancePolicy(this);
+        this.history.add(historyEntry);
         this.status = status;
     }
 
