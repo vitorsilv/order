@@ -1,15 +1,7 @@
 # TODO
-- Teste Kadrop
-- Kafka envio
-- Kafka Consumo - Maquina de estados
 - Testes
-- Métricas
-- Logs
-- Atualizar PS1
-
-## Seria bom
-- jenkins
-- kube
+- Atualizar Readme
+- Swagger
 
 ## Rodando o projeto local
 

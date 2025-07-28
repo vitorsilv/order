@@ -39,33 +39,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(BusinessException.class)
-    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                LocalDateTime.now(),
-                ex.getStatus().value(),
-                ex.getMessage(),
-                request.getDescription(false),
-                ex.getDetails()
-        );
-
-        return new ResponseEntity<>(response, ex.getStatus());
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleAllExceptions(Exception ex, WebRequest request) {
-        ErrorResponse response = new ErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                "Ocorreu um erro interno no servidor",
-                request.getDescription(false),
-                null
-        );
-
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-
     public record ErrorResponse(LocalDateTime timestamp, int status, String message, String path,
                                     Map<String, String> details) {
     }

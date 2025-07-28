@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -73,28 +74,15 @@ public class InsuranceService {
         return policy.toResponse();
     }
 
-    public InsurancePolicyResponse findByPolicyId(UUID policyId) {
+    public Optional<InsurancePolicyResponse> findByPolicyId(UUID policyId) {
         log.info("{} Buscando apólice por ID: {}", LOG_PREFIX, policyId);
         return insuranceRepository.findById(policyId)
-                .map(InsurancePolicy::toResponse)
-                .orElseThrow(() -> {
-                    log.error("{} Apólice não encontrada: {}", LOG_PREFIX, policyId);
-                    return new ResponseStatusException(
-                            HttpStatus.NOT_FOUND,
-                            "Apólice não encontrada com ID: " + policyId
-                    );
-                });
+                .map(InsurancePolicy::toResponse);
     }
 
     public List<InsurancePolicyResponse> findByCustomerId(UUID customerId) {
         log.info("{} Buscando apólices por cliente: {}", LOG_PREFIX, customerId);
-        List<InsurancePolicy> policies = insuranceRepository.findByCustomerId(customerId);
-
-        if (policies.isEmpty()) {
-            log.warn("{} Nenhuma apólice encontrada para cliente: {}", LOG_PREFIX, customerId);
-        }
-
-        return policies.stream()
+        return insuranceRepository.findByCustomerId(customerId).stream()
                 .map(InsurancePolicy::toResponse)
                 .toList();
     }
