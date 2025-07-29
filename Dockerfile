@@ -1,6 +1,4 @@
-# Dockerfile
-FROM eclipse-temurin:17-jdk-alpine
-
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copia o arquivo de build e baixa as dependências

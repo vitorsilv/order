@@ -1,7 +1,5 @@
-package com.itau.desafio.infrastructure.rest;
+package com.itau.desafio.config;
 
-import com.itau.desafio.domain.exception.BusinessException;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

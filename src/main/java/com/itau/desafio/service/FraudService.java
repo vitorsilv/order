@@ -1,4 +1,4 @@
-package com.itau.desafio.domain.service;
+package com.itau.desafio.service;
 
 import com.itau.desafio.domain.exception.FraudApiException;
 import com.itau.desafio.domain.model.fraud.FraudAnalysisRequest;

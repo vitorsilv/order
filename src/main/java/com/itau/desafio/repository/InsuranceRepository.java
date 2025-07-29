@@ -1,4 +1,4 @@
-package com.itau.desafio.domain.repository;
+package com.itau.desafio.repository;
 
 import com.itau.desafio.domain.model.insurance.InsurancePolicy;
 import org.springframework.data.jpa.repository.JpaRepository;

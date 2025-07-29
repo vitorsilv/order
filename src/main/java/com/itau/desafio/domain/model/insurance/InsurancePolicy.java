@@ -3,19 +3,24 @@ package com.itau.desafio.domain.model.insurance;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@Slf4j
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Entity
 public class InsurancePolicy  {
+    private static final String LOG_PREFIX = "[INSURANCE_POLICY]";
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -59,7 +64,17 @@ public class InsurancePolicy  {
         this.addStatusHistory(InsurancePolicyStatus.RECEIVED);
     }
 
-    public void addStatusHistory(InsurancePolicyStatus status) {
+    public void changeStatus(InsurancePolicyStatus nextStatus) {
+        if (!this.status.canTransitionTo(nextStatus)) {
+            log.error("{} Transição de status inválida. Apólice: {}, Status atual: {}, Próximo status: {}",
+                    LOG_PREFIX, this.id, this.status, nextStatus);
+            throw new IllegalStateException("Transição de status inválida: " + this.status + " -> " + nextStatus);
+        }
+        this.addStatusHistory(nextStatus);
+        log.info("{} Status alterado com sucesso. Apólice: {}, Novo status: {}", LOG_PREFIX, this.id, nextStatus);
+    }
+
+    private void addStatusHistory(InsurancePolicyStatus status) {
         InsurancePolicyHistory historyEntry = new InsurancePolicyHistory(status, LocalDateTime.now());
         historyEntry.setInsurancePolicy(this);
         this.history.add(historyEntry);

@@ -1,16 +1,11 @@
 package com.itau.desafio.infrastructure.rest;
 
-import com.itau.desafio.domain.model.insurance.InsurancePolicy;
 import com.itau.desafio.domain.model.insurance.InsurancePolicyRequest;
 import com.itau.desafio.domain.model.insurance.InsurancePolicyResponse;
-import com.itau.desafio.domain.service.InsuranceService;
+import com.itau.desafio.service.InsuranceService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

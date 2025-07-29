@@ -38,6 +38,17 @@ services:
       MOCKSERVER_WEB_UI_PORT: 1081
       MOCKSERVER_INITIALIZATION_JSON_PATH: /config/expectations.json
     volumes:
-      - ./mock-fraud-api/config:/config
+      - ./dev-env/mock-fraud-api/config:/config
+  app:
+    build: .
+    container_name: insurance-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/insurance_db
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    depends_on:
+      - postgres
 volumes:
   postgres_data:

@@ -1,4 +1,4 @@
-package com.itau.desafio.domain.event;
+package com.itau.desafio.infrastructure.messaging;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

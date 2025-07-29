@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "61076e97-0f8e-4902-84bb-0a72f615e539",
+		"name": "Desafio Itaú - Insurance API - Vitor Silva",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47086548",
+		"_collection_link": "https://vitorsilv-dcc93d93-1400075.postman.co/workspace/Privado's-Workspace~1fa4bbd2-0a43-4692-85b4-370f721ef8e9/collection/47086548-61076e97-0f8e-4902-84bb-0a72f615e539?action=share&source=collection_link&creator=47086548"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"item": [
+				{
+					"name": "Full Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/health",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Liveness Probe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/health/liveness",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health",
+								"liveness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Readiness Probe",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/health/readiness",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Insurance",
+			"item": [
+				{
+					"name": "Create Insurance Policy",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\": \"adc56d77-348c-4bf0-908f-22d402ee715c\",\n    \"product_id\": \"1b2da7cc-b367-4196-8a78-9cfeee21f587\",\n    \"category\": \"AUTO\",\n    \"salesChannel\": \"MOBILE\",\n    \"paymentMethod\": \"CREDIT_CARD\",\n    \"total_monthly_premium_amount\": 75.25,\n    \"insured_amount\": 275000.50,\n    \"coverages\": {\n        \"Roubo\": 100000.25,\n        \"Perda Total\": 100000.25,\n        \"Colisão com Terceiros\": 75000.00\n    },\n    \"assistances\": [\n        \"Guincho até 250km\",\n        \"Troca de Óleo\",\n        \"Chaveiro 24h\"\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/insurance",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"insurance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/insurance/:policyId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"insurance",
+								":policyId"
+							],
+							"variable": [
+								{
+									"key": "policyId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Customer Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/insurance/customer/:customerId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"insurance",
+								"customer",
+								":customerId"
+							],
+							"variable": [
+								{
+									"key": "customerId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		}
+	]
+}

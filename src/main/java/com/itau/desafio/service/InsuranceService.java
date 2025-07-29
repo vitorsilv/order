@@ -1,15 +1,13 @@
-package com.itau.desafio.domain.service;
+package com.itau.desafio.service;
 
-import com.itau.desafio.domain.event.OrderEvent;
+import com.itau.desafio.infrastructure.messaging.OrderEvent;
 import com.itau.desafio.infrastructure.messaging.OrderProducer;
 import com.itau.desafio.domain.model.insurance.*;
-import com.itau.desafio.domain.repository.InsuranceRepository;
+import com.itau.desafio.repository.InsuranceRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,45 +28,40 @@ public class InsuranceService {
     public InsurancePolicyResponse createInsurancePolicy(InsurancePolicyRequest request) {
         log.info("{} Iniciando criação de apólice para cliente: {}", LOG_PREFIX, request.getCustomerId());
 
-        InsurancePolicy policy = request.toEntity();
-        InsurancePolicy saved = insuranceRepository.save(policy);
+        InsurancePolicy entity = request.toEntity();
+        InsurancePolicy policy = insuranceRepository.save(entity);
 
         log.info("{} Apólice criada com sucesso - ID: {}, Cliente: {}, Produto: {}",
                 LOG_PREFIX,
-                saved.getId(),
-                saved.getCustomerId(),
-                saved.getProductId());
+                policy.getId(),
+                policy.getCustomerId(),
+                policy.getProductId());
 
         boolean validated = fraudService.processPolicy(policy);
         if (validated) {
-            policy.addStatusHistory(InsurancePolicyStatus.VALIDATED);
-            log.info("{} Validação de fraude APROVADA para apólice {}", LOG_PREFIX, saved.getId());
+            policy.changeStatus(InsurancePolicyStatus.VALIDATED);
+            sendStatusEvent(policy, policy.getStatus());
         } else {
-            policy.addStatusHistory(InsurancePolicyStatus.REJECTED);
-            log.info("{} Validação de fraude REJEITADA para apólice {}", LOG_PREFIX, saved.getId());
-            sendStatusEvent(saved, policy.getStatus());
+            policy.changeStatus(InsurancePolicyStatus.REJECTED);
+            sendStatusEvent(policy, policy.getStatus());
             policy.setFinishedAt(LocalDateTime.now());
             log.info("{} Processo concluído para apólice {} - Tempo total: {}",
                     LOG_PREFIX,
-                    saved.getId(),
+                    policy.getId(),
                     calculateProcessingTime(policy));
             return policy.toResponse();
         }
 
-        sendStatusEvent(saved, policy.getStatus());
+        policy.changeStatus(InsurancePolicyStatus.PENDING);
+        sendStatusEvent(policy, policy.getStatus());
 
-        policy.addStatusHistory(InsurancePolicyStatus.PENDING);
-        log.info("{} Apólice {} em estado PENDENTE", LOG_PREFIX, saved.getId());
-        sendStatusEvent(saved, policy.getStatus());
-
-        policy.addStatusHistory(InsurancePolicyStatus.APPROVED);
-        log.info("{} Apólice {} APROVADA com sucesso", LOG_PREFIX, saved.getId());
-        sendStatusEvent(saved, policy.getStatus());
+        policy.changeStatus(InsurancePolicyStatus.APPROVED);
+        sendStatusEvent(policy, policy.getStatus());
 
         policy.setFinishedAt(LocalDateTime.now());
         log.info("{} Processo concluído para apólice {} - Tempo total: {}",
                 LOG_PREFIX,
-                saved.getId(),
+                policy.getId(),
                 calculateProcessingTime(policy));
 
         return policy.toResponse();

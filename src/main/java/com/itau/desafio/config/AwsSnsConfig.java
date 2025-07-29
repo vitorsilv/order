@@ -1,4 +1,4 @@
-package com.itau.desafio.infrastructure.messaging;
+package com.itau.desafio.config;
 
 import io.awspring.cloud.sns.core.SnsTemplate;
 import org.springframework.beans.factory.annotation.Value;

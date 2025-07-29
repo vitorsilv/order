@@ -1,6 +1,5 @@
 package com.itau.desafio.infrastructure.messaging;
 
-import com.itau.desafio.domain.event.OrderEvent;
 import io.awspring.cloud.sns.core.SnsTemplate;
 import org.springframework.stereotype.Service;
 

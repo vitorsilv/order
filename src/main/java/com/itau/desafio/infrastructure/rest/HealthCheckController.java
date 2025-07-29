@@ -32,7 +32,7 @@ public class HealthCheckController implements HealthIndicator {
 
     @GetMapping("/readiness")
     public Health readiness() {
-        return check(); // Verifica dependências críticas
+        return check();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class HealthCheckController implements HealthIndicator {
         return check();
     }
 
-    private Health check() {
+    protected Health check() {
         try {
             return Health.up()
                     .withDetail("service", "insurance-service")

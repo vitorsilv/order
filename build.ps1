@@ -14,7 +14,7 @@ param (
 $projectName = "insurance-service"
 $mavenCommand = ".\mvnw.cmd"
 $dockerComposeCommand = "docker-compose"
-$dockerEnvPath = ".\dev-env"  # Caminho relativo para a pasta dev-env
+$dockerEnvPath = "."
 
 function Show-Help {
     Write-Host "Uso: .\build.ps1 [comando]"
@@ -54,7 +54,7 @@ function Invoke-DockerBuild {
     try {
         docker build -t $projectName .
     } finally {
-        Set-Location ..
+        Set-Location .
     }
 }
 
@@ -64,7 +64,7 @@ function Invoke-ComposeUp {
     try {
         & $dockerComposeCommand up -d --build
     } finally {
-        Set-Location ..
+        Set-Location .
     }
 }
 
@@ -74,7 +74,7 @@ function Invoke-ComposeDown {
     try {
         & $dockerComposeCommand down
     } finally {
-        Set-Location ..
+        Set-Location .
     }
 }
 
@@ -84,7 +84,7 @@ function Invoke-Logs {
     try {
         & $dockerComposeCommand logs -f
     } finally {
-        Set-Location ..
+        Set-Location .
     }
 }
 
